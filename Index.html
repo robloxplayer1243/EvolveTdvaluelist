@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve Clash TD Value List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        header h1 {
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        header p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            color: #ccc;
+        }
+        
+        /* Rarity Buttons */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button.rarity-btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        button.rarity-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        button.common { background: linear-gradient(to right, #7f8c8d, #95a5a6); }
+        button.rare { background: linear-gradient(to right, #2980b9, #3498db); }
+        button.epic { background: linear-gradient(to right, #8e44ad, #9b59b6); }
+        button.legendary { background: linear-gradient(to right, #f39c12, #f1c40f); }
+        button.mythic { background: linear-gradient(to right, #c0392b, #e74c3c); }
+        button.exclusive { background: linear-gradient(to right, #8a2be2, #9370db); }
+        button.secret { background: linear-gradient(to right, #2c3e50, #34495e); }
+        
+        /* Main Content */
+        main {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        /* Rarity Sections */
+        .rarity-section {
+            display: none;
+            padding: 20px;
+            background: rgba(25, 25, 35, 0.8);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .rarity-section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Unit Cards */
+        .unit-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .card {
+            background: rgba(30, 30, 40, 0.9);
+            border-radius: 15px;
+            padding: 15px;
+            width: 220px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        
+        .card.shiny {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(50, 40, 20, 0.9));
+            border: 2px solid gold;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .card.shiny::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                rgba(255, 215, 0, 0) 0%, 
+                rgba(255, 215, 0, 0.1) 25%, 
+                rgba(255, 215, 0, 0) 50%, 
+                rgba(255, 215, 0, 0.1) 75%, 
+                rgba(255, 215, 0, 0) 100%);
+            animation: shine 3s infinite linear;
+            z-index: -1;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-50%, -50%); }
+            100% { transform: rotate(360deg) translate(-50%, -50%); }
+        }
+        
+        .card img {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card.shiny img {
+            border-color: gold;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .rarity-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .common .rarity-badge { background: linear-gradient(to right, #7f8c8d, #95a5a6); color: #000; }
+        .rare .rarity-badge { background: linear-gradient(to right, #2980b9, #3498db); }
+        .epic .rarity-badge { background: linear-gradient(to right, #8e44ad, #9b59b6); }
+        .legendary .rarity-badge { background: linear-gradient(to right, #f39c12, #f1c40f); color: #000; }
+        .mythic .rarity-badge { background: linear-gradient(to right, #c0392b, #e74c3c); }
+        .exclusive .rarity-badge { background: linear-gradient(to right, #8a2be2, #9370db); }
+        .secret .rarity-badge { background: linear-gradient(to right, #2c3e50, #34495e); }
+        
+        .card h3 {
+            margin: 10px 0;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        
+        .card.shiny h3 {
+            color: gold;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .card p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+        
+        .card .value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .stable { color: cyan; }
+        .increasing { color: lightgreen; }
+        .decreasing { color: red; }
+        .overpay { color: #ff9ff3; }
+        
+        .shiny-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: gold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        footer p {
+            color: #aaa;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .buttons {
+                gap: 8px;
+            }
+            
+            button.rarity-btn {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .card {
+                width: calc(50% - 20px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                gap: 5px;
+            }
+            
+            button.rarity-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Evolve Clash TD Value List</h1>
+        <p>Complete value guide with shiny/golden variants for all units</p>
+        <div class="buttons">
+            <button class="rarity-btn common" onclick="showRarity('common')">
+                <i class="fas fa-circle"></i> Common
+            </button>
+            <button class="rarity-btn rare" onclick="showRarity('rare')">
+                <i class="fas fa-gem"></i> Rare
+            </button>
+            <button class="rarity-btn epic" onclick="showRarity('epic')">
+                <i class="fas fa-crown"></i> Epic
+            </button>
+            <button class="rarity-btn legendary" onclick="showRarity('legendary')">
+                <i class="fas fa-fire"></i> Legendary
+            </button>
+            <button class="rarity-btn mythic" onclick="showRarity('mythic')">
+                <i class="fas fa-dragon"></i> Mythic
+            </button>
+            <button class="rarity-btn exclusive" onclick="showRarity('exclusive')">
+                <i class="fas fa-star"></i> Exclusive
+            </button>
+            <button class="rarity-btn secret" onclick="showRarity('secret')">
+                <i class="fas fa-user-secret"></i> Secret
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- COMMON -->
+        <section id="common" class="rarity-section">
+            <h2><i class="fas fa-circle"></i> Common Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card common">
+                    <div class="rarity-badge">Common</div>
+                    <img src="https://source.unsplash.com/random/?soldier,game">
+                    <h3>Napo</h3>
+                    <p class="value">Value: 5</p>
+                    <p>Demand: 1/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card common shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Common Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,soldier">
+                    <h3>Shiny Napo</h3>
+                    <p class="value">Value: 20</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card common">
+                    <div class="rarity-badge">Common</div>
+                    <img src="https://source.unsplash.com/random/?infantry,game">
+                    <h3>Soldier</h3>
+                    <p class="value">Value: 5</p>
+                    <p>Demand: 1/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card common shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Common Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,infantry">
+                    <h3>Shiny Soldier</h3>
+                    <p class="value">Value: 20</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card common">
+                    <div class="rarity-badge">Common</div>
+                    <img src="https://source.unsplash.com/random/?flamethrower,game">
+                    <h3>Flamethrower Cannon</h3>
+                    <p class="value">Value: 5</p>
+                    <p>Demand: 1/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card common shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Common Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,flamethrower">
+                    <h3>Shiny Flamethrower</h3>
+                    <p class="value">Value: 20</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RARE -->
+        <section id="rare" class="rarity-section">
+            <h2><i class="fas fa-gem"></i> Rare Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card rare">
+                    <div class="rarity-badge">Rare</div>
+                    <img src="https://source.unsplash.com/random/?tank,game">
+                    <h3>Tank</h3>
+                    <p class="value">Value: 50</p>
+                    <p>Demand: 2/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card rare shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Rare Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,tank">
+                    <h3>Shiny Tank</h3>
+                    <p class="value">Value: 150</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card rare">
+                    <div class="rarity-badge">Rare</div>
+                    <img src="https://source.unsplash.com/random/?mortar,game">
+                    <h3>Mortar</h3>
+                    <p class="value">Value: 50</p>
+                    <p>Demand: 2/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card rare shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Rare Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,mortar">
+                    <h3>Shiny Mortar</h3>
+                    <p class="value">Value: 150</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card rare">
+                    <div class="rarity-badge">Rare</div>
+                    <img src="https://source.unsplash.com/random/?hunter,game">
+                    <h3>Hunter</h3>
+                    <p class="value">Value: 50</p>
+                    <p>Demand: 2/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card rare shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Rare Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,hunter">
+                    <h3>Shiny Hunter</h3>
+                    <p class="value">Value: 150</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card rare">
+                    <div class="rarity-badge">Rare</div>
+                    <img src="https://source.unsplash.com/random/?warrior,ancient">
+                    <h3>Ancient Warrior</h3>
+                    <p class="value">Value: 50</p>
+                    <p>Demand: 2/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card rare shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Rare Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,warrior">
+                    <h3>Shiny Warrior</h3>
+                    <p class="value">Value: 150</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card rare">
+                    <div class="rarity-badge">Rare</div>
+                    <img src="https://source.unsplash.com/random/?goliath,robot">
+                    <h3>Goliath</h3>
+                    <p class="value">Value: 50</p>
+                    <p>Demand: 2/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card rare shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Rare Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,goliath">
+                    <h3>Shiny Goliath</h3>
+                    <p class="value">Value: 150</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EPIC -->
+        <section id="epic" class="rarity-section">
+            <h2><i class="fas fa-crown"></i> Epic Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card epic">
+                    <div class="rarity-badge">Epic</div>
+                    <img src="https://source.unsplash.com/random/?minigun,turret">
+                    <h3>Minigun Turret</h3>
+                    <p class="value">Value: 200</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card epic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Epic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,minigun">
+                    <h3>Shiny Minigun</h3>
+                    <p class="value">Value: 500</p>
+                    <p>Demand: 6/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card epic">
+                    <div class="rarity-badge">Epic</div>
+                    <img src="https://source.unsplash.com/random/?tesla,tower">
+                    <h3>Tesla Tower</h3>
+                    <p class="value">Value: 200</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card epic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Epic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,tesla">
+                    <h3>Shiny Tesla</h3>
+                    <p class="value">Value: 500</p>
+                    <p>Demand: 6/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card epic">
+                    <div class="rarity-badge">Epic</div>
+                    <img src="https://source.unsplash.com/random/?sniper,tower">
+                    <h3>Sniper Tower</h3>
+                    <p class="value">Value: 200</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card epic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Epic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,sniper">
+                    <h3>Shiny Sniper</h3>
+                    <p class="value">Value: 500</p>
+                    <p>Demand: 6/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEGENDARY -->
+        <section id="legendary" class="rarity-section">
+            <h2><i class="fas fa-fire"></i> Legendary Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card legendary">
+                    <div class="rarity-badge">Legendary</div>
+                    <img src="https://source.unsplash.com/random/?rocket,pad">
+                    <h3>Rocket Pad</h3>
+                    <p class="value">Value: 400</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card legendary shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Legendary Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,rocket">
+                    <h3>Shiny Rocket Pad</h3>
+                    <p class="value">Value: 30k</p>
+                    <p>Demand: 7/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card legendary">
+                    <div class="rarity-badge">Legendary</div>
+                    <img src="https://source.unsplash.com/random/?cyborg,soldier">
+                    <h3>Cyborg Soldier</h3>
+                    <p class="value">Value: 500</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card legendary shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Legendary Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,cyborg">
+                    <h3>Shiny Cyborg Soldier</h3>
+                    <p class="value">Value: 50k</p>
+                    <p>Demand: 8/10</p>
+                    <p>Status: <span class="stable">stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card legendary">
+                    <div class="rarity-badge">Legendary</div>
+                    <img src="https://source.unsplash.com/random/?ravager,monster">
+                    <h3>Ravager</h3>
+                    <p class="value">Value: 5k</p>
+                    <p>Demand: 5/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card legendary shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Legendary Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,ravager">
+                    <h3>Shiny Ravager</h3>
+                    <p class="value">Value: ???</p>
+                    <p>Demand: 9/10</p>
+                    <p>Status: <span class="increasing">Increasing</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card legendary">
+                    <div class="rarity-badge">Legendary</div>
+                    <img src="https://source.unsplash.com/random/?shadow,warrior">
+                    <h3>Shadow Warrior</h3>
+                    <p class="value">Value: 5k</p>
+                    <p>Demand: 7/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card legendary shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Legendary Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,shadow">
+                    <h3>Shiny Shadow Warrior</h3>
+                    <p class="value">Value: 500k</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="decreasing">Decreasing</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card legendary">
+                    <div class="rarity-badge">Legendary</div>
+                    <img src="https://source.unsplash.com/random/?paladin,knight">
+                    <h3>Paladin</h3>
+                    <p class="value">Value: 500</p>
+                    <p>Demand: 4/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card legendary shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Legendary Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,paladin">
+                    <h3>Shiny Paladin</h3>
+                    <p class="value">Value: 20k</p>
+                    <p>Demand: 8/10</p>
+                    <p>Status: <span class="decreasing">Decreasing</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MYTHIC -->
+        <section id="mythic" class="rarity-section">
+            <h2><i class="fas fa-dragon"></i> Mythic Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card mythic">
+                    <div class="rarity-badge">Mythic</div>
+                    <img src="https://source.unsplash.com/random/?mechatronic">
+                    <h3>Mechatronic</h3>
+                    <p class="value">Value: 20k-40k</p>
+                    <p>Demand: 7/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card mythic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Mythic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,mechatronic">
+                    <h3>Shiny Mechatronic</h3>
+                    <p class="value">Value: 60k-100k</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="overpay">Overpay + decreasing</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card mythic">
+                    <div class="rarity-badge">Mythic</div>
+                    <img src="https://source.unsplash.com/random/?astral,gate">
+                    <h3>Astral Gate</h3>
+                    <p class="value">Value: 5k</p>
+                    <p>Demand: 3/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card mythic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Mythic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,astral">
+                    <h3>Shiny Astral Gate</h3>
+                    <p class="value">Value: 15k</p>
+                    <p>Demand: 6/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card mythic">
+                    <div class="rarity-badge">Mythic</div>
+                    <img src="https://source.unsplash.com/random/?archangel">
+                    <h3>Archangel</h3>
+                    <p class="value">Value: 7k</p>
+                    <p>Demand: 5.5/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card mythic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Mythic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,archangel">
+                    <h3>Shiny Archangel</h3>
+                    <p class="value">Value: 25k</p>
+                    <p>Demand: 9/10</p>
+                    <p>Status: <span class="overpay">Overpay</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card mythic">
+                    <div class="rarity-badge">Mythic</div>
+                    <img src="https://source.unsplash.com/random/?samurai">
+                    <h3>Samurai</h3>
+                    <p class="value">Value: ???</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="overpay">Overpay+decreasing</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card mythic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Mythic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,samurai">
+                    <h3>Shiny Samurai</h3>
+                    <p class="value">Value: ???</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="overpay">Overpay</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card mythic">
+                    <div class="rarity-badge">Mythic</div>
+                    <img src="https://source.unsplash.com/random/?necromancer">
+                    <h3>Necromancer</h3>
+                    <p class="value">Value: 8k</p>
+                    <p>Demand: 6/10</p>
+                    <p>Status: <span class="stable">Stable</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card mythic shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Mythic Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,necromancer">
+                    <h3>Shiny Necromancer</h3>
+                    <p class="value">Value: 24k</p>
+                    <p>Demand: 8/10</p>
+                    <p>Status: <span class="overpay">Overpay</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXCLUSIVE -->
+        <section id="exclusive" class="rarity-section">
+            <h2><i class="fas fa-crown"></i> Exclusive Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card exclusive">
+                    <div class="rarity-badge">Exclusive</div>
+                    <img src="https://source.unsplash.com/random/?voidra">
+                    <h3>Voidra</h3>
+                    <p class="value">Value: 50k-60k</p>
+                    <p>Demand: 9/10</p>
+                    <p>Status: <span class="overpay">Overpay + Increasing</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card exclusive shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Exclusive Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,void">
+                    <h3>Shiny Voidra</h3>
+                    <p class="value">Value: 150k-200k</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="overpay">Overpay + Increasing</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECRET -->
+        <section id="secret" class="rarity-section">
+            <h2><i class="fas fa-user-secret"></i> Secret Units</h2>
+            <div class="unit-cards">
+                <!-- Regular -->
+                <div class="card secret">
+                    <div class="rarity-badge">Secret</div>
+                    <img src="https://source.unsplash.com/random/?knight">
+                    <h3>Knight</h3>
+                    <p class="value">Value: 300k-400k</p>
+                    <p>Demand: 8/10</p>
+                    <p>Status: <span class="decreasing">Decreasing</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card secret shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Secret Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,knight">
+                    <h3>Shiny Knight</h3>
+                    <p class="value">Value: 3M-5M</p>
+                    <p>Demand: 10/10</p>
+                    <p>Status: <span class="decreasing">Overpay + Decreasing</span></p>
+                </div>
+                
+                <!-- Regular -->
+                <div class="card secret">
+                    <div class="rarity-badge">Secret</div>
+                    <img src="https://source.unsplash.com/random/?monarch">
+                    <h3>Monarch</h3>
+                    <p class="value">Value: 40k-60k</p>
+                    <p>Demand: 7/10</p>
+                    <p>Status: <span class="decreasing">Decreasing</span></p>
+                </div>
+                
+                <!-- Shiny -->
+                <div class="card secret shiny">
+                    <div class="shiny-indicator"><i class="fas fa-star"></i></div>
+                    <div class="rarity-badge">Secret Shiny</div>
+                    <img src="https://source.unsplash.com/random/?golden,monarch">
+                    <h3>Shiny Monarch</h3>
+                    <p class="value">Value: 4M-6M</p>
+                    <p>Demand: 9/10</p>
+                    <p>Status: <span class="decreasing">Overpay + Decreasing</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Credit: Discord - duck541 | Updated: October 2023</p>
+        <p class="disclaimer">Values are estimates based on recent trades. Actual trade values may vary.</p>
+    </footer>
+
+    <script>
+        function showRarity(rarity) {
+            const sections = document.querySelectorAll('.rarity-section');
+            sections.forEach(sec => {
+                sec.style.display = (sec.id === rarity) ? 'block' : 'none';
+            });
+            
+            // Highlight active button
+            document.querySelectorAll('.rarity-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.rarity-btn.${rarity}`).classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Initialize the page with Common section visible
+        document.addEventListener('DOMContentLoaded', function() {
+            showRarity('common');
+        });
+    </script>
+</body>
+</html>
+```
+
